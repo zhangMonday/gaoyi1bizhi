@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>班级壁纸</title>
 
-    <style>
+  <style>
         * {
             margin: 0;
             padding: 0;
@@ -24,50 +24,19 @@
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
-            height: 100vh; /* 设置高度为100%视口高度 */
-        }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 80%; /* 设置容器高度占据 */
-            width: 100%; /* 宽度占满 */
         }
 
         .clock {
             position: relative;
-            width: 240px;
-            height: 240px;
-            background: #c9d5e0;
             display: flex;
             justify-content: center;
             align-items: center;
             border-radius: 50px;
-            box-shadow: 30px 30px 30px -10px rgba(0, 0, 0, 0.15),
-                inset 15px 15px 10px rgba(255, 255, 255, 0.75),
-                -15px -15px 35px rgba(255, 255, 255, 0.55),
-                inset -1px -1px 10px rgba(0, 0, 0, 0.2);
             margin-bottom: 10px; /* 减小间距 */
-        }
-
-        .clock::before {
-            content: '';
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #e91e63;
-            border-radius: 50%;
-            z-index: 1000;
-            box-shadow: 0 0 0 1px #e91e63,
-                0 0 0 3px #fff,
-                0 0 5px 5px rgba(0, 0, 0, 0.15);
         }
 
         .clock .numbers {
             position: absolute;
-            inset: 35px;
             background: #152b4a;
             border-radius: 50%;
             box-shadow: 5px 5px 15px #152b4a66,
@@ -77,7 +46,6 @@
 
         .clock .numbers span {
             position: absolute;
-            inset: 5px;
             text-align: center;
             color: #fff;
             font-size: 1.25em;
@@ -93,7 +61,6 @@
         .clock .numbers::before {
             content: '';
             position: absolute;
-            inset: 35px;
             background: linear-gradient(#2196f3, #e91e63);
             border-radius: 50%;
             animation: animate 2s linear infinite;
@@ -108,52 +75,8 @@
             }
         }
 
-        .clock .numbers::after {
-            content: '';
-            position: absolute;
-            inset: 38px;
-            background: #152b4a;
-            border-radius: 50%;
-        }
-
-        .clock .numbers .circle {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            z-index: 10;
-        }
-
-        .clock .numbers .circle i {
-            position: absolute;
-            width: 3px;
-            height: 50%;
-            background: #fff;
-            transform-origin: bottom;
-            transform: scaleY(0.55);
-        }
-
-        .clock .numbers .circle#hr i {
-            width: 4px;
-            transform: scaleY(0.3);
-        }
-
-        .clock .numbers .circle#mn i {
-            transform: scaleY(0.45);
-        }
-
-        .clock .numbers .circle#sc i {
-            width: 2px;
-            height: 50%;
-            background: #c91e63;
-            box-shadow: 0 30px 0 #e91e63;
-            transform: scaleY(0.55);
-        }
-
         /* 数字时钟样式 */
         #digital-clock {
-            font-size: 6em; /* 调整数字时钟字体大小 */
             font-weight: bold; /* 加粗字体 */
             color: transparent; /* 设为透明以便于显示渐变 */
             background: linear-gradient(90deg, #ff6a00, #ee0979); /* 渐变色 */
@@ -182,17 +105,15 @@
             background: linear-gradient(90deg, #2196f3, #e91e63); /* 渐变色 */
             background-clip: text; /* 背景裁剪为文本 */
             -webkit-background-clip: text; /* Safari 兼容性 */
-            font-size: 3em; /* 增加日期字号 */
+            animation: gradient 5s linear infinite; /* 动态渐变 */
             margin: 5px 0; /* 减小间距 */
             text-align: center; /* 使文本居中 */
-            animation: gradient 5s linear infinite; /* 动态渐变 */
         }
 
         /* 名言样式 */
         #quote {
             font-family: 'KaiTi', serif; /* 使用楷体字体 */
             color: #fff; /* 名言保持为白色 */
-            font-size: 2em; /* 减小名言字号 */
             margin: 5px 0; /* 减小间距 */
             text-align: center; /* 使文本居中 */
         }
@@ -233,9 +154,37 @@
     <div id="date"></div>
     <div id="quote"></div>
 
-    <img id="vector-image" src="banhui.png" alt="班徽" />
+    <img id="vector-image" src="banhui.png" alt="banhui" />
 
     <script>
+        // 获取图片的实际显示大小并设置其他元素大小
+        const vectorImage = document.getElementById('vector-image');
+
+        vectorImage.onload = function() {
+            const imgWidth = vectorImage.clientWidth;
+            const imgHeight = vectorImage.clientHeight;
+
+            // 计算所需的大小（占图片的 70%）
+            const targetSize = Math.min(imgWidth, imgHeight) * 0.7;
+
+            // 设置模拟时钟、数字时钟、日期和名言的大小
+            document.querySelector('.clock').style.width = `${targetSize}px`;
+            document.querySelector('.clock').style.height = `${targetSize}px`;
+
+            const numbers = document.querySelector('.clock .numbers');
+            numbers.style.width = `${targetSize}px`;
+            numbers.style.height = `${targetSize}px`;
+
+            const digitalClock = document.getElementById('digital-clock');
+            digitalClock.style.fontSize = `${targetSize * 0.2}px`; // 20% 的目标大小
+
+            const date = document.getElementById('date');
+            date.style.fontSize = `${targetSize * 0.1}px`; // 10% 的目标大小
+
+            const quote = document.getElementById('quote');
+            quote.style.fontSize = `${targetSize * 0.08}px`; // 8% 的目标大小
+        };
+
         // 模拟时钟
         let hr = document.querySelector('#hr');
         let mn = document.querySelector('#mn');
@@ -273,6 +222,7 @@
             const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
             document.getElementById('date').textContent = now.toLocaleDateString('zh-CN', options);
         }
+
 
         // 更新名言
         const quotes = [
