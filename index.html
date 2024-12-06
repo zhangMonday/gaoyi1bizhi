@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>考场时间</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #acbaca;
+            background-image: url('bg.jpg');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .clock {
+            position: relative;
+            width: 210px;
+            height: 210px;
+            background: #c9d5e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50px;
+            box-shadow: 30px 30px 30px -10px rgba(0, 0, 0, 0.15),
+                inset 15px 15px 10px rgba(255, 255, 255, 0.75),
+                -15px -15px 35px rgba(255, 255, 255, 0.55),
+                inset -1px -1px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px; /* 减小间距 */
+        }
+
+        .clock::before {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #e91e63;
+            border-radius: 50%;
+            z-index: 1000;
+            box-shadow: 0 0 0 1px #e91e63,
+                0 0 0 3px #fff,
+                0 0 5px 5px rgba(0, 0, 0, 0.15);
+        }
+
+        .clock .numbers {
+            position: absolute;
+            inset: 35px;
+            background: #152b4a;
+            border-radius: 50%;
+            box-shadow: 5px 5px 15px #152b4a66,
+                inset 5px 5px 5px rgba(255, 255, 255, 0.75),
+                -6px -6px 10px rgba(255, 255, 255, 1);
+        }
+
+        .clock .numbers span {
+            position: absolute;
+            inset: 5px;
+            text-align: center;
+            color: #fff;
+            font-size: 1.25em;
+            transform: rotate(calc(90deg * var(--i)));
+        }
+
+        .clock .numbers span b {
+            font-weight: 600;
+            display: inline-block;
+            transform: rotate(calc(-90deg * var(--i)));
+        }
+
+        .clock .numbers::before {
+            content: '';
+            position: absolute;
+            inset: 35px;
+            background: linear-gradient(#2196f3, #e91e63);
+            border-radius: 50%;
+            animation: animate 2s linear infinite;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .clock .numbers::after {
+            content: '';
+            position: absolute;
+            inset: 38px;
+            background: #152b4a;
+            border-radius: 50%;
+        }
+
+        .clock .numbers .circle {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .clock .numbers .circle i {
+            position: absolute;
+            width: 3px;
+            height: 50%;
+            background: #fff;
+            transform-origin: bottom;
+            transform: scaleY(0.55);
+        }
+
+        .clock .numbers .circle#hr i {
+            width: 4px;
+            transform: scaleY(0.3);
+        }
+
+        .clock .numbers .circle#mn i {
+            transform: scaleY(0.45);
+        }
+
+        .clock .numbers .circle#sc i {
+            width: 2px;
+            height: 50%;
+            background: #c91e63;
+            box-shadow: 0 30px 0 #e91e63;
+            transform: scaleY(0.55);
+        }
+
+        /* 数字时钟样式 */
+        #digital-clock {
+            font-size: 4em; /* 调整数字时钟字体大小 */
+            font-weight: bold; /* 加粗字体 */
+            color: transparent; /* 设为透明以便于显示渐变 */
+            background: linear-gradient(90deg, #ff6a00, #ee0979); /* 渐变色 */
+            background-clip: text; /* 背景裁剪为文本 */
+            -webkit-background-clip: text; /* Safari 兼容性 */
+            animation: gradient 5s linear infinite; /* 动态渐变 */
+            margin: 10px 0; /* 减小与其他元素的间距 */
+        }
+
+        /* 动态渐变效果 */
+        @keyframes gradient {
+            0% {
+                background: linear-gradient(90deg, #2196f3, #e91e63);
+            }
+            50% {
+                background: linear-gradient(90deg, #ff6a00, #ee0979);
+            }
+            100% {
+                background: linear-gradient(90deg, #2196f3, #e91e63);
+            }
+        }
+
+        /* 日期样式 */
+        #date {
+            color: transparent; /* 设为透明以便于显示渐变 */
+            background: linear-gradient(90deg, #2196f3, #e91e63); /* 渐变色 */
+            background-clip: text; /* 背景裁剪为文本 */
+            -webkit-background-clip: text; /* Safari 兼容性 */
+            font-size: 2em; /* 增加日期字号 */
+            margin: 10px 0; /* 减小间距 */
+            text-align: center; /* 使文本居中 */
+            animation: gradient 5s linear infinite; /* 动态渐变 */
+        }
+
+        /* 名言样式 */
+        #quote {
+            font-family: 'KaiTi', serif; /* 使用楷体字体 */
+            color: #000; 
+            font-size: 1.2em; /* 减小名言字号 */
+            margin: 5px 0; /* 减小间距 */
+            text-align: center; /* 使文本居中 */
+        }
+
+        /* 矢量图样式 */
+        #vector-image {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px; /* 根据需要调整大小 */
+            height: auto;
+            animation: gradient 3s infinite alternate;
+        }
+
+        @keyframes gradient {
+            0% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <div class="clock">
+        <div class="numbers">
+            <span style="--i:0"><b>12</b></span>
+            <span style="--i:1"><b>3</b></span>
+            <span style="--i:2"><b>6</b></span>
+            <span style="--i:3"><b>9</b></span>
+            <div class="circle" id="hr"><i></i></div>
+            <div class="circle" id="mn"><i></i></div>
+            <div class="circle" id="sc"><i></i></div>
+        </div>
+    </div>
+
+    <!-- 数字时钟容器 -->
+    <div id="digital-clock">00:00:00</div>
+
+    <!-- 日期和星期 -->
+    <div id="date"></div>
+    <div id="quote"></div>
+
+    <img id="vector-image" src="banhui.svg" alt="矢量图" />
+
+    <script>
+        // 模拟时钟
+        let hr = document.querySelector('#hr');
+        let mn = document.querySelector('#mn');
+        let sc = document.querySelector('#sc');
+        setInterval(() => {
+            let day = new Date();
+            let hh = day.getHours() * 30;
+            let mm = day.getMinutes() * 6;
+            let ss = day.getSeconds() * 6;
+            hr.style.transform = `rotateZ(${hh + (mm / 12)}deg)`;
+            mn.style.transform = `rotateZ(${mm}deg)`;
+            sc.style.transform = `rotateZ(${ss}deg)`;
+        }, 1000);
+
+        // 数字时钟
+        const digitalClock = document.getElementById('digital-clock');
+
+        function updateDigitalClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+
+            // 补零
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+
+            digitalClock.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        // 更新日期和星期
+        function updateDateAndDay() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('date').textContent = now.toLocaleDateString('zh-CN', options);
+        }
+
+        // 更新名言
+        const quotes = [
+            "生活就像骑自行车。要保持平衡，就得继续前进。 - 爱因斯坦",
+            "成功不是终点，失败也不是终结，重要的是继续前进的勇气。 - 温斯顿·丘吉尔",
+            "人生的意义在于追求幸福。 - 维克多·雨果",
+            "你必须成为你希望看到的变化。 - 甘地",
+            "生活中最大的乐趣就是去做那些别人说你做不到的事。 - 阿尔贝特·爱因斯坦",
+            "成功的秘诀在于坚持自己的目标。 - 乔治·肖",
+            "不要等待机会，而要创造机会。 - 乔治·肖",
+            "未来属于那些相信自己梦想之美的人。 - 埃莉诺·罗斯福"
+        ];
+
+        function updateQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            document.getElementById('quote').textContent = quotes[randomIndex];
+        }
+
+        // 初始化数字时钟、日期和名言
+        updateDigitalClock();
+        updateDateAndDay();
+        updateQuote();
+
+        // 每秒更新数字时钟
+        setInterval(updateDigitalClock, 1000);
+        // 每分钟更新日期
+        setInterval(updateDateAndDay, 60000);
+        // 每3分钟更新名言
+        setInterval(updateQuote, 180000);
+    </script>
+</body>
+</html>
+
