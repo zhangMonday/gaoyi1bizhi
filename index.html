@@ -159,7 +159,7 @@
             background-clip: text; /* 背景裁剪为文本 */
             -webkit-background-clip: text; 
             font-size: 4.5em; 
-            margin: 50px 0; 
+            margin: 20px 0; 
             text-align: center; 
         }
 
@@ -167,8 +167,8 @@
         #quote {
             font-family: 'KaiTi', serif; /* 使用楷体字体 */
             color: #fff; 
-            font-size: 2.5em; 
-            margin: 50px 0; 
+            font-size: 2.2em; 
+            margin: 20px 0; 
             text-align: center; 
         }
 
@@ -347,8 +347,8 @@
         setInterval(updateDigitalClock, 1000);
         // 每分钟更新日期
         setInterval(updateDateAndDay, 60000);
-        // 每3分钟更新名言
-        setInterval(updateQuote, 180000);
+        // 每1分钟更新名言
+        setInterval(updateQuote, 60000);
 
         // 点击任意位置切换名言
         document.body.addEventListener('click', updateQuote);
