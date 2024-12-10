@@ -96,6 +96,15 @@
             inset: 35px;
             background: linear-gradient(#2196f3, #e91e63);
             border-radius: 50%;
+            animation: animate 2s linear infinite;
+        }
+        @keyframes animate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .clock .numbers::after {
