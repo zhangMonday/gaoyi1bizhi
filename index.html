@@ -1,0 +1,440 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>班级壁纸</title>
+    <link rel="icon" type="image/png" href="icon.png">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #94b2e0;
+            background-image: url('background.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh; /* 高度为100%视口高度 */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 80%; /* 容器高度占据 */
+            width: 100%; /* 宽度占满 */
+        }
+
+        .clock {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            background: #c9d5e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50px;
+            box-shadow: 30px 30px 30px -10px rgba(0, 0, 0, 0.15),
+                inset 15px 15px 10px rgba(255, 255, 255, 0.75),
+                -15px -15px 35px rgba(255, 255, 255, 0.55),
+                inset -1px -1px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px; 
+        }
+
+        .clock::before {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #e91e63;
+            border-radius: 50%;
+            z-index: 1000;
+            box-shadow: 0 0 0 1px #e91e63,
+                0 0 0 3px #fff,
+                0 0 5px 5px rgba(0, 0, 0, 0.15);
+        }
+
+        .clock .numbers {
+            position: absolute;
+            inset: 35px;
+            background: #152b4a;
+            border-radius: 50%;
+            box-shadow: 5px 5px 15px #152b4a66,
+                inset 5px 5px 5px rgba(255, 255, 255, 0.75),
+                -6px -6px 10px rgba(255, 255, 255, 1);
+        }
+
+        .clock .numbers span {
+            position: absolute;
+            inset: 5px;
+            text-align: center;
+            color: #fff;
+            font-size: 1.25em;
+            transform: rotate(calc(90deg * var(--i)));
+        }
+
+        .clock .numbers span b {
+            font-weight: 600;
+            display: inline-block;
+            transform: rotate(calc(-90deg * var(--i)));
+        }
+
+        .clock .numbers::before {
+            content: '';
+            position: absolute;
+            inset: 35px;
+            background: linear-gradient(#2196f3, #e91e63);
+            border-radius: 50%;
+            animation: animate 2s linear infinite;
+        }
+        @keyframes animate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .clock .numbers::after {
+            content: '';
+            position: absolute;
+            inset: 38px;
+            background: #152b4a;
+            border-radius: 50%;
+        }
+
+        .clock .numbers .circle {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .clock .numbers .circle i {
+            position: absolute;
+            width: 3px;
+            height: 50%;
+            background: #fff;
+            transform-origin: bottom;
+            transform: scaleY(0.55);
+        }
+
+        .clock .numbers .circle#hr i {
+            width: 4px;
+            transform: scaleY(0.3);
+        }
+
+        .clock .numbers .circle#mn i {
+            transform: scaleY(0.45);
+        }
+
+        .clock .numbers .circle#sc i {
+            width: 2px;
+            height: 50%;
+            background: #c91e63;
+            box-shadow: 0 30px 0 #e91e63;
+            transform: scaleY(0.55);
+        }
+
+        @font-face { /*定义自定义字体CH */
+        font-family: 'CH';
+        src: url('fonts/汉仪雪君体简.TTF') format('truetype');
+        }
+        .custom-font {
+        font-family: 'CH', sans-serif;
+        }
+
+        @font-face { /*定义自定义字体MH */
+        font-family: 'MH';
+        src: url('fonts/Uranus_Pixel_11Px.ttf') format('truetype');
+        }
+        .custom-font {
+        font-family: 'MH', sans-serif;
+        }
+
+
+        /* 数字时钟样式 */
+        #digital-clock {
+            font-family: 'CH', serif; /* 使用自定义字体 */
+            font-size: 6em; 
+            font-weight: bold; 
+            color: transparent; /* 设为透明以便于显示渐变 */
+            background: linear-gradient(90deg, #ff6a00, #ee0979); /* 渐变色 */
+            background-clip: text; /* 背景裁剪为文本 */
+            -webkit-background-clip: text; 
+            margin: 10px 0; 
+        }
+
+        /* 日期样式 */
+        #date {
+            color: transparent; 
+            background: linear-gradient(90deg, #2196f3, #e91e63); /* 渐变色 */
+            background-clip: text; /* 背景裁剪为文本 */
+            -webkit-background-clip: text; 
+            font-family: 'CH', serif; /* 使用自定义字体 */
+            font-size: 4em; 
+            margin: 20px 0; 
+            text-align: center; 
+        }
+
+        /* 名言样式 */
+        #quote {
+            font-family: 'KaiTi', serif; /* 使用楷体字体 */
+            color: #706980; 
+            font-size: 2.2em; 
+            margin: 20px 0; 
+            text-align: center; 
+        }
+
+        /* 班徽样式 */
+        #vector-image {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 80px; 
+            height: auto;
+            animation: gradient 3s infinite alternate;
+        }
+
+        @keyframes gradient {
+            0% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+
+        /* 倒计时样式 */
+        #countdown {
+            top: 0; /* 将顶部对齐 */
+            left: 0; /* 将左侧对齐 */
+            width: 100%; /* 宽度占满 */
+            font-family: 'MH', sans-serif; /* 使用自定义字体 */
+            font-size: 3em; /* 设置字体大小 */
+            font-weight: bold; /* 设置字体加粗 */
+            color: #2e65ca; /* 设置字体颜色 */
+            background: linear-gradient(90deg, #ff6a00, #ee0979); /* 设置背景渐变色 */
+            background-clip: text; /* 背景裁剪为文本 */
+            -webkit-background-clip: text; 
+            margin: 20px 0; /* 设置外边距 */
+            text-align: center; /* 设置文本居中 */
+        }
+
+        #countdown-text {
+            font-family: 'CH', sans-serif; /* 使用自定义字体 */
+            font-size: 3em; /* 设置字体大小为2em */
+            color: #721919; /* 设置字体颜色为白色 */
+            margin-bottom: 10px; /* 设置底部外边距为10px */
+            text-align: center; /* 设置文本居中 */
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="clock">
+        <div class="numbers">
+            <span style="--i:0"><b>12</b></span>
+            <span style="--i:1"><b>3</b></span>
+            <span style="--i:2"><b>6</b></span>
+            <span style="--i:3"><b>9</b></span>
+            <div class="circle" id="hr"><i></i></div>
+            <div class="circle" id="mn"><i></i></div>
+            <div class="circle" id="sc"><i></i></div>
+        </div>
+    </div>
+
+    <!-- 数字时钟容器 -->
+    <div id="digital-clock">00:00:00</div>
+
+    <!-- 日期和星期 -->
+    <div id="date"></div>
+    <div id="quote"></div>
+    <div id="countdown-text">离期末考试只剩</div>
+    <div id="countdown"></div> <!-- 倒计时容器 -->
+    <div id="countdown-text">还发啥呆？众人皆醉我独醒！(￢︿￢||)</div>
+
+    <img id="vector-image" src="banhui.png" alt="班徽" />
+
+    <script>
+// 模拟时钟
+        let hr = document.querySelector('#hr');
+        let mn = document.querySelector('#mn');
+        let sc = document.querySelector('#sc');
+        setInterval(() => {
+            let day = new Date();
+            let hh = day.getHours() * 30;
+            let mm = day.getMinutes() * 6;
+            let ss = day.getSeconds() * 6;
+            hr.style.transform = `rotateZ(${hh + (mm / 12)}deg)`;
+            mn.style.transform = `rotateZ(${mm}deg)`;
+            sc.style.transform = `rotateZ(${ss}deg)`;
+        }, 1000);
+
+
+// 数字时钟
+        const digitalClock = document.getElementById('digital-clock');
+
+        function updateDigitalClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+
+            // 补零
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+
+            digitalClock.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        // 更新日期和星期
+        function updateDateAndDay() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('date').textContent = now.toLocaleDateString('zh-CN', options);
+        }
+
+
+// 倒计时
+        const examDate = new Date('2025-01-13T07:00:00'); // 设置期末考试的日期和时间
+
+        // 更新倒计时的函数
+        function updateCountdown() {
+            const now = new Date();
+            const timeLeft = examDate - now;
+
+            // 计算剩余的天、小时、分钟和秒
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            // 显示倒计时
+            document.getElementById('countdown').textContent = `${days}天 ${hours}小时 ${minutes}分钟 ${seconds}秒`;
+        }
+
+
+// 名言
+        const quotes = [
+          "生活就像骑自行车。要保持平衡，就得继续前进。 —— 爱因斯坦",
+            "成功不是终点，失败也不是终结，重要的是继续前进的勇气。 —— 丘吉尔",
+            "人生的意义在于追求幸福。 —— 雨果",
+            "生活中最大的乐趣就是去做那些别人说你做不到的事。 —— 爱因斯坦",
+            "成功的秘诀在于坚持自己的目标。 —— 乔治·肖",
+            "不要等待机会，而要创造机会。 —— 乔治·肖",
+            "未来属于那些相信自己梦想之美的人。 —— 罗斯福",
+            "谁对时间越吝啬，时间就对谁越慷慨。 —— 李大钊",
+            "没有绝望的处境，只有对处境绝望的人。 —— 哈尔西",
+            "勤奋是智慧的源泉，勤奋是成功的保证。 —— 爱迪生",
+            "勤奋是通往成功的阶梯，勤奋是成功的保障。 —— 爱迪生",
+            "不积跬步，无以成千里；不积小流，无以成江海。 ——《荀子•劝学》",
+            "你若要喜爱你自己的价值，你就得给世界创造价值。 —— 歌德",
+            "辛勤的蜜蜂永远没有时间悲哀。 —— 布莱克",
+            "要成就一番大事业，必须从小事做起。 —— 列宁",
+            "业精于勤，荒于戏。 —— 韩愈",
+            "不经历风雨，怎么见彩虹。 —— 邓丽君",
+            "聪明出于勤奋，天才在于积累。 —— 华罗庚",
+            "应该记住我们的事业，需要的是手而不是嘴。 —— 童第周",
+            "要摘取果子的人必须爬上树。 —— 富勒",
+            "天才就是无止境刻苦勤奋的能力。 —— 卡莱尔",
+            "信任是一切事业成功的基石。 —— 佚名",
+            "过去属于死神，未来属于你自己。 —— 雪莱",
+            "志不强者智不达。 —— 墨霍",
+            "与朋友交，只取其长，不计其短。 ——（唐）李煜",
+            "君子与君子以同道为同；小人与小人以同利为友。 ——（宋）欧阳修",
+            "朋友：同师曰朋，同志曰友。 ——（春秋）左丘明",
+            "与人交，推其长者，讳其短者，故能久也。 ——（春秋）孔丘",
+            "同类相似，同声相应，固天理也。 ——（战国）庄周",
+            "人不能像走兽那样活着，应该追求知识和美德。 —— 但丁",
+            "勿以恶小而为之，勿以善小而不为。 —— 刘备",
+            "土扶可成墙，积德为厚地。 —— 李白",
+            "一个人最伤心的事情无过于良心的死灭。 —— 郭沫若",
+            "人生大病，只是一“傲”字。 —— 王阳明",
+            "盛满易为灾，谦冲恒受福。 —— 张廷玉",
+            "谨慎比大胆要有力得多。 —— 雨果",
+            "人类的一切努力的目的在于获得幸福。 —— 欧文",
+            "个人的痛苦与快乐，必须融合在时代的痛苦与快乐里。 —— 艾青",
+            "建筑在别人痛苦上的幸福不是真正的幸福。 —— 阿·巴巴耶娃",
+            "想不付出任何代价而得到幸福，那是神话。 —— 徐特立",
+            "资本家来到世间，从头到脚，每个毛孔都滴着血和肮脏的东西。 —— 马克思",
+            "你想成为幸福的人吗？但愿你首先学会吃得起苦。 —— 屠格涅夫",
+            "人活在世，不过一场美丽的寄居。 —— 简嫃",
+            "活着不一定要鲜艳，但一定要有自己的颜色。 —— 张曙光",
+            "善于利用零星时间的人，才会做出更大的成绩来。 —— 华罗庚",
+            "少而好学，如日出之阳；壮而好学，如日中之光；老而好学，如炳烛之明。 —— 刘向",
+            "芸芸众生，孰不爱生？爱生之极，进而爱群。 —— 秋瑾",
+            "愿望是半个生命，淡漠是半个死亡。 —— 纪伯伦",
+            "生命的定义就是拥有明天。 —— 冯骥才",
+            "在逆风里把握方向，做暴风雨中的海燕，做不改颜色的孤星。 —— 余光中",
+            "在自己身上，克服这个时代。 —— 尼采",
+            "历史是一堆灰烬，但灰烬深处有余温。 —— 黑格尔",
+            "教育不是注满一桶水，而是点燃一把火。 —— 叶芝",
+            "不可乘快而多事，不可因倦而鲜终。 —— 菜根谭",
+            "一花凋零，荒芜不了整个春天。 —— 巴尔扎克",
+            "青春是一种持续的陶醉，是理智的狂热。 —— 拉罗什富科",
+            "少年易学老难成，一寸光阴不可轻。 —— 朱熹",
+            "天生我材必有用。 —— 李白",
+            "月缺不改光，剑折不改刚。 —— 梅尧臣",
+            "穷则独善其身，达则兼济天下。 —— 孟子",
+            "我从未想过我会在24号这一天倒下。 —— 科比",
+            "管好你自己。 —— 薛雨绅",
+            "保持安静！ —— 班委",
+            "香朝美人。 —— 刘宸玮",
+            "要不要我教你登dua郎？ —— 杰哥",
+            "如果早知道.... —— 阿伟",
+            "Very good！ —— 周北凡",
+            "今夜星光闪闪，我爱你的心满满。 —— 奶龙",
+            "大嘴巴子抽死你！ —— 周北凡",
+            "只因你太美~ —— 蔡徐坤",
+            "迎面走来的你让我如此蠢蠢欲动！ —— 蔡徐坤",
+            "你干嘛～哈哈～～哎呦～ —— 蔡徐坤",
+            "听不懂我说话吗！🤤 —— 薛雨绅",
+            "3!😡2!🤡1!😤 —— 薛雨绅",
+            "不要笑！老师没来自己自习都不懂吗！都高中生了🥵 —— 薛雨绅",
+            "谁在笑！要笑出去笑！自己忍不住吗！忍不住到后面站着去🤓🤓🤓 —— 薛雨绅"
+        ];
+
+        function updateQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            document.getElementById('quote').textContent = quotes[randomIndex];
+        }
+
+        // 点击任意位置或移动鼠标切换名言
+        document.body.addEventListener('click', updateQuote);
+
+//[维护]初始化及更新
+
+        // 初始化数字时钟
+        updateDigitalClock();
+        // 初始化日期
+        updateDateAndDay();
+        // 初始化名言
+        updateQuote();
+        // 初始化倒计时
+        updateCountdown();
+
+        // 每秒更新数字时钟
+        setInterval(updateDigitalClock, 1000);
+        // 每分钟更新日期
+        setInterval(updateDateAndDay, 60000);
+        // 每1分钟更新名言
+        setInterval(updateQuote, 60000);
+        // 每秒更新倒计时
+        setInterval(updateCountdown, 1000);
+
+    </script>
+
+</body>
+</html>
