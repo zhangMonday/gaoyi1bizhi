@@ -3,7 +3,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>班级壁纸</title>
     <link rel="icon" type="image/png" href="icon.png">
-    <link href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" type="text/css">
 
     <style>
         * {
@@ -36,8 +35,121 @@
             width: 100%; /* 宽度占满 */
         }
 
-                /* 自定义字体 */
-                @font-face { /*定义自定义字体CH */
+        .clock {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            background: #c9d5e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50px;
+            box-shadow: 30px 30px 30px -10px rgba(0, 0, 0, 0.15),
+                inset 15px 15px 10px rgba(255, 255, 255, 0.75),
+                -15px -15px 35px rgba(255, 255, 255, 0.55),
+                inset -1px -1px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px; 
+        }
+
+        .clock::before {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #e91e63;
+            border-radius: 50%;
+            z-index: 1000;
+            box-shadow: 0 0 0 1px #e91e63,
+                0 0 0 3px #fff,
+                0 0 5px 5px rgba(0, 0, 0, 0.15);
+        }
+
+        .clock .numbers {
+            position: absolute;
+            inset: 35px;
+            background: #152b4a;
+            border-radius: 50%;
+            box-shadow: 5px 5px 15px #152b4a66,
+                inset 5px 5px 5px rgba(255, 255, 255, 0.75),
+                -6px -6px 10px rgba(255, 255, 255, 1);
+        }
+
+        .clock .numbers span {
+            position: absolute;
+            inset: 5px;
+            text-align: center;
+            color: #fff;
+            font-size: 1.25em;
+            transform: rotate(calc(90deg * var(--i)));
+        }
+
+        .clock .numbers span b {
+            font-weight: 600;
+            display: inline-block;
+            transform: rotate(calc(-90deg * var(--i)));
+        }
+
+        .clock .numbers::before {
+            content: '';
+            position: absolute;
+            inset: 35px;
+            background: linear-gradient(#2196f3, #e91e63);
+            border-radius: 50%;
+            animation: animate 2s linear infinite;
+        }
+        @keyframes animate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .clock .numbers::after {
+            content: '';
+            position: absolute;
+            inset: 38px;
+            background: #152b4a;
+            border-radius: 50%;
+        }
+
+        .clock .numbers .circle {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .clock .numbers .circle i {
+            position: absolute;
+            width: 3px;
+            height: 50%;
+            background: #fff;
+            transform-origin: bottom;
+            transform: scaleY(0.55);
+        }
+
+        .clock .numbers .circle#hr i {
+            width: 4px;
+            transform: scaleY(0.3);
+        }
+
+        .clock .numbers .circle#mn i {
+            transform: scaleY(0.45);
+        }
+
+        .clock .numbers .circle#sc i {
+            width: 2px;
+            height: 50%;
+            background: #c91e63;
+            box-shadow: 0 30px 0 #e91e63;
+            transform: scaleY(0.55);
+        }
+
+        @font-face { /*定义自定义字体CH */
         font-family: 'CH';
         src: url('fonts/汉仪雪君体简.TTF') format('truetype');
         }
@@ -52,205 +164,19 @@
         .custom-font {
         font-family: 'MH', sans-serif;
         }
-        
-        /* 开始设置Clock */
-        .digital-clock {
-        position: relative;
-        color: #fff;
-        background: #2e2e44;
-        width: 425px;
-        padding: 20px 45px;
-        box-shadow: 0 5px 25px rgba(14, 21, 37, 0.8);
-        border-radius: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        }
-    
-        .digital-clock:before {
-            content: '';
-            position: absolute;
-            background: linear-gradient(45deg, #24ff6d, #2f93f1, #ff5e9a);
-            background-size: 200% 200%;
-            top: -5px;
-            left: -5px;
-            bottom: -5px;
-            right: -5px;
-            z-index: -1;
-            filter: blur(40px);
-            animation: glowing 10s ease infinite;
-        }
-        
-        @keyframes glowing {
-            0% {
-                background-position: 0 50%;
-            }
-        
-            50% {
-                background-position: 100% 50%;
-            }
-        
-            100% {
-                background-position: 0 50%;
-            }
-        }
-        
-        .time {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        
-        }
-        
-        .hours,
-        .dots,
-        .minutes {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: 600;
-            padding: 0 10px;
-            line-height: 125px;
-        }
-        
-        .hours,
-        .minutes {
-            font-size: 6.5em;
-            width: 125px;
-        }
-        
-        .dots {
-            font-size: 5em;
-            color: #929292;
-        }
-        
-        .hours {
-            background: -webkit-linear-gradient(90deg, #634dff, #5fd4ff);
-            -webkit-text-fill-color: transparent;
-            -webkit-background-clip: text;
-        }
-        
-        
-        .minutes {
-            background: -webkit-linear-gradient(90deg, #ff5e9e, #ffb960);
-            -webkit-text-fill-color: transparent;
-            -webkit-background-clip: text;
-        }
-        
-        .right-side {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            margin-left: 10px;
-        }
-        
-        .period,
-        .seconds {
-            font-size: 1.5em;
-            font-weight: 500;
-        }
-        
-        .period {
-            transform: translateY(-20px);
-            background: -webkit-linear-gradient(90deg, #f7b63f, #faf879);
-            -webkit-text-fill-color: transparent;
-            -webkit-background-clip: text;
-        }
-        
-        .seconds {
-            transform: translateY(16px);
-            background: -webkit-linear-gradient(90deg, #24ff6d, #2f93f1);
-            -webkit-text-fill-color: transparent;
-            -webkit-background-clip: text;
-        }
-        
-
-        
-        .day-name,
-        .day-num,
-        .year {
-            margin-left: 8px;
-        }
-        
-        .dot-menu-btn {
-            position: absolute;
-            top: 0;
-            right: 0;
-            margin: 10px;
-            color: #efefef;
-            font-size: 1.5em;
-            cursor: pointer;
-        }
-        
-        .dot-menu {
-            z-index: 999;
-            position: absolute;
-            top: 7px;
-            right: 5px;
-            list-style: none;
-            background: #353e54;
-            padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
-            visibility: hidden;
-            opacity: 0;
-            transition: 0.4s ease;
-        }
-        
-        .dot-menu.active {
-            visibility: visible;
-            opacity: 1;
-        }
-        
-        .menu-item {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .clock-format-text {
-            color: #efefef;
-            font-size: 0.9em;
-            margin-right: 20px;
-        }
-        
-        .format-switch-btn {
-            width: 35px;
-            height: 15px;
-            background: #485470;
-            border-radius: 75px;
-            box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.1),
-                inset -2px -2px 4px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .format-switch-btn:before {
-            content: '';
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            background: #ff5e9a;
-            border-radius: 50%;
-            box-shadow: 0 5px 25px #ff5e9a;
-            transform: translateX(-10px);
-            transition: 0.4s ease;
-            transition-property: background, transform;
-        }
-        
-        .format-switch-btn.active:before {
-            background: #0bff8d;
-            box-shadow: 0 5px 25px #0bff8d;
-            transform: translateX(10px);
-        }
 
 
+        /* 数字时钟样式 */
+        #digital-clock {
+            font-family: 'CH', serif; /* 使用自定义字体 */
+            font-size: 6em; 
+            font-weight: bold; 
+            color: transparent; /* 设为透明以便于显示渐变 */
+            background: linear-gradient(90deg, #ff6a00, #ee0979); /* 渐变色 */
+            background-clip: text; /* 背景裁剪为文本 */
+            -webkit-background-clip: text; 
+            margin: 10px 0; 
+        }
 
         /* 日期样式 */
         #date {
@@ -316,25 +242,20 @@
 </head>
 
 <body>
-
-    <div class="digital-clock">
-        <i class="fas fa-ellipsis-v uil uil-ellipsis-v dot-menu-btn" style="color:#fff" id="active-menu"></i>
-        <ul class="dot-menu" id="active-menu">
-            <li class="menu-item" id="active-menu">
-                <span class="clock-format-text" id="active-menu">24-Hour Format</span>
-                <div class="format-switch-btn" id="active-menu" date-format="12"></div>
-            </li>
-        </ul>
-        <div class="time">
-            <span class="hours">00</span>
-            <span class="dots">:</span>
-            <span class="minutes">00</span>
-            <div class="right-side">
-                <span class="period">AM/PM</span>
-                <span class="seconds">00</span>
-            </div>
+    <div class="clock">
+        <div class="numbers">
+            <span style="--i:0"><b>12</b></span>
+            <span style="--i:1"><b>3</b></span>
+            <span style="--i:2"><b>6</b></span>
+            <span style="--i:3"><b>9</b></span>
+            <div class="circle" id="hr"><i></i></div>
+            <div class="circle" id="mn"><i></i></div>
+            <div class="circle" id="sc"><i></i></div>
         </div>
     </div>
+
+    <!-- 数字时钟容器 -->
+    <div id="digital-clock">00:00:00</div>
 
     <!-- 日期和星期 -->
     <div id="date"></div>
@@ -346,98 +267,22 @@
     <img id="vector-image" src="banhui.png" alt="班徽" />
 
     <script>
-
 // 模拟时钟
-        const formatSwitchBtn = document.querySelector(".format-switch-btn");
-    
-        formatSwitchBtn.addEventListener("click", () => {
-        formatSwitchBtn.classList.toggle("active");
-        
-        var formatValue = formatSwitchBtn.getAttribute("date-format");
-        
-        if (formatValue === "12") {
-            formatSwitchBtn.setAttribute("date-format", "24");
-        }
-        else {
-            formatSwitchBtn.setAttribute("date-format", "12");
-        }
-        });
-        
-        
-        //Get Current Time In Javascript
-        function clock() {
-        var today = new Date();
-        
-        var hours = today.getHours();
-        var minutes = today.getMinutes();
-        var seconds = today.getSeconds();
-        let period = "AM";
-        
-        //set the time period
-        if (hours >= 12) {
-            period = "PM";
-        }
-        
-        //set 12 hour clock format
-        var formatValue = formatSwitchBtn.getAttribute("date-format");
-        
-        if (formatValue === "12") {
-            hours = hours > 12 ? hours % 12 : hours;
-        }
-        
-        //add 0 for the value lower than 10
-        if (hours < 10) {
-            hours = "0" + hours;
-        }
-        
-        if (minutes < 10) {
-            minutes = "0" + minutes;
-        }
-        
-        if (seconds < 10) {
-            seconds = "0" + seconds;
-        }
-        
-        
-        document.querySelector(".hours").innerHTML = hours;
-        document.querySelector(".minutes").innerHTML = minutes;
-        document.querySelector(".period").innerHTML = period;
-        document.querySelector(".seconds").innerHTML = seconds;
-        }
-        var updateClock = setInterval(clock, 1000);
-        
-        // get the date in js
-        
-        var today = new Date();
-        const dayNum = today.getDate();
-        const year = today.getFullYear();
-        const dayName = today.toLocaleString("default", { weekday: "long" });
-        const monthName = today.toLocaleString("default", { month: "short" });
-        // document.querySelector(".year").innerHTML = year;
-        
-        //js for dot menu toglle
-        
-        const dotmenuBtn = document.querySelector(".dot-menu-btn");
-        const dotMenu = document.querySelector(".dot-menu");
-        dotmenuBtn.addEventListener("click", () => {
-        dotMenu.classList.toggle("active");
-        });
-        
-        document.addEventListener("click", (e) => {
-        if (e.target.id !== "active-menu") {
-            dotMenu.classList.remove("active");
-        }
-        });
+        let hr = document.querySelector('#hr');
+        let mn = document.querySelector('#mn');
+        let sc = document.querySelector('#sc');
+        setInterval(() => {
+            let day = new Date();
+            let hh = day.getHours() * 30;
+            let mm = day.getMinutes() * 6;
+            let ss = day.getSeconds() * 6;
+            hr.style.transform = `rotateZ(${hh + (mm / 12)}deg)`;
+            mn.style.transform = `rotateZ(${mm}deg)`;
+            sc.style.transform = `rotateZ(${ss}deg)`;
+        }, 1000);
 
-// 更新日期和星期
-        function updateDateAndDay() {
-            const now = new Date();
-            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-            document.getElementById('date').textContent = now.toLocaleDateString('zh-CN', options);
-        }
 
-// 倒计时
-
+// 数字时钟
         const digitalClock = document.getElementById('digital-clock');
 
         function updateDigitalClock() {
@@ -445,8 +290,24 @@
             let hours = now.getHours();
             let minutes = now.getMinutes();
             let seconds = now.getSeconds();
+
+            // 补零
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+
+            digitalClock.textContent = `${hours}:${minutes}:${seconds}`;
         }
 
+        // 更新日期和星期
+        function updateDateAndDay() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('date').textContent = now.toLocaleDateString('zh-CN', options);
+        }
+
+
+// 倒计时
         const examDate = new Date('2025-01-13T07:00:00'); // 设置期末考试的日期和时间
 
         // 更新倒计时的函数
